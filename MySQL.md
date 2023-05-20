@@ -357,7 +357,278 @@ limit			--分页查询
 
 
 
-# 函数：
+# 函数
+
+#### 字符串函数
+
+- 常用的函数
+
+  |           函数           |                          功能                           |
+  | :----------------------: | :-----------------------------------------------------: |
+  |   CONCAT(S1,S2,...Sn)    |        字符串拼接，将S1,S2,...Sn拼接成一个字符串        |
+  |        LOWER(str)        |                         转小写                          |
+  |        UPPER(str)        |                         转大写                          |
+  |     LPAD(str,n,pad)      | 左填充，用字符串pad对str左边进行填充，以达到n个字符长度 |
+  |     RPAD(str,n,pad)      | 右填充，用字符串pad对str右边进行填充，以达到n个字符长度 |
+  |        TRIM(str)         |                  去掉字符串头尾的空格                   |
+  | SUBSTRING(str,start,len) |          返回字符串str从start起len个长度字符串          |
+
+  
+
+#### 数值函数
+
+- 常用的数值函数
+
+  |    函数    |               功能               |
+  | :--------: | :------------------------------: |
+  |  CEIL(x)   |             向上取整             |
+  |  FLOOR(x)  |             向下取整             |
+  |  MOD(x,y)  |           返回x/y的模            |
+  |   RAND()   |        返回0～1内的随机数        |
+  | ROUND(x,y) | 求参数x的四舍五入值，保留y位小数 |
+
+  
+
+#### 日期函数
+
+- 常用的日期函数
+
+  |               函数                |                       功能                        |
+  | :-------------------------------: | :-----------------------------------------------: |
+  |             CURDATE()             |                   返回当前日期                    |
+  |             CURTIME()             |                   返回当前时间                    |
+  |               NOW()               |                返回当前日期和时间                 |
+  |            YEAR(date)             |                获取指定date的年份                 |
+  |            MOUTH(date)            |                获取指定date的月份                 |
+  |             DAY(date)             |                获取指定date的日期                 |
+  | DATE_ADD(data,INTERVAL expo type) | 返回一个日期/时间值加上一个时间间隔expr后的时间值 |
+  |       DATEDIFF(date1,date2)       |    返回起始时间date1和结束时间date2之间的天数     |
+
+  
+
+#### 流程函数
+
+- 常用的流程控制函数
+
+  |                           函数                           |                       功能                       |
+  | :------------------------------------------------------: | :----------------------------------------------: |
+  |                      IF(value,t,f)                       |        如果value为true，返回t，否则返回f         |
+  |                  IFNULL(value1,value2)                   |     如果value1不为空，返回value1，否则value2     |
+  |    CASE WHEN [val1] THEN [res1]...ELSE [default] END     |  如果val1为true，返回res1,...，否则返回default   |
+  | CASE [expr] WHEN [val1] THEN [res1]...ELSE [default] END | 如果expr值等于val1，返回res1,...,否则返回default |
+
+   
+
+
+
+
+
+# 约束
+
+#### 概念
+
+- 约束是作用于表中字段上的规则，用于限制存储在表中的数据
+
+#### 目的
+
+- 保证数据库中数据的正确、有效性和完整性
+
+#### 分类
+
+|   约束   |                        描述                        |   关键字    |
+| :------: | :------------------------------------------------: | :---------: |
+| 非空约束 |             限制该字段的数据不能为null             |  NOT NULL   |
+| 唯一约束 |       保证该字段的所有数据都是唯一、不重复的       |    UNQUE    |
+| 主键约束 |      主键是一行数据的唯一标识，要求非空且唯一      | PRIMARY KEY |
+| 默认约束 |   保存数据时，如果为制定该字段的值，则采用默认值   |   DEFAULT   |
+| 检查约束 |              保证字段值满足某一个条件              |    CHECK    |
+| 外键约束 | 用来让两张表之间建立连接，保证数据的一致性和完整性 | FOREIGN KEY |
+
+- 一般约束
+
+```mysql
+CREATE Table key_user (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT 'ID 主键',
+    name VARCHAR(10) UNIQUE NOT NULL COMMENT '姓名 非空唯一',
+    age INT check(
+        age > 0
+        and age < 120
+    ) COMMENT '年龄 0-120',
+    status char(1) DEFAULT '1' COMMENT '状态',
+    gender CHAR(1) COMMENT '性别'
+) COMMENT '用户表';
+
+INSERT INTO
+    key_user(name, age, status, gender)
+VALUES
+    ('Tom', 19, '1', 'm'),
+    ('Jack', 22, '1', 'm'),
+    ('Tomas', 21, '0', 'm');
+
+INSERT INTO
+    key_user (name, age, status, gender)
+VALUES
+    ('Mina', 22, '1', 'f'),
+    ('Meys', 21, '1', 'f');
+    
+```
+
+- [ ] 主键自增的正确性怎么保证？
+
+
+
+- 外键约束
+
+  - 用来建立两表之间的联系
+
+  - 语法
+
+    ```MYSQL
+    create table table_name (
+    		name varchar(10),
+    		......
+    		[constraint] [foreign_key_name] foreign key (外键字段名) references 主表(主表列名)
+    );
+    ```
+
+    ```mysql
+    --添加外键
+    alter table table_name add constraint foreign_key_name foreign key (外键字段名) references 主表(主表列名);
+    --删除外键
+    alter table table_name drop foreign key foreign_key_name;
+    ```
+
+  - 删除、更新行为
+
+    |    行为     |                             说明                             |
+    | :---------: | :----------------------------------------------------------: |
+    |  NO ACTION  | 当在父表中删除/更新对应的记录时，首先检查记录是否有对应的外键，有则不允许删除/更新（= restrict） |
+    |  RESTRICT   | 当在父表中删除/更新对应的记录时，首先检查记录是否有对应的外键，有则不允许删除/更新（=no action） |
+    |   CASCADE   | 当在父表中删除/更新对应的记录时，首先检查记录是否有对应的外键，有则也删除/更新外键在子表中的记录 |
+    |  SET NULL   | 当在父表中删除对应的记录时，首先检查记录是否有对应的外键，有则设置子表中的外键为null |
+    | SET DEFAULT |         父表中有变更时，子表将外键列设置成一个默认值         |
+
+    ```
+    alter table table_name add constraint 
+    ```
+
+# 多表查询
+
+#### 多表关系
+
+- 一对多（多对一）
+  - 部门和员工
+- 多对多
+  - 学生和课程（中间表 $n\times m$）
+- 一对一
+  - 多用于单表的拆分（提升操作效率）
+
+
+#### 多表查询概述
+
+- 从多张表中查询数据
+- 笛卡尔积
+  - 数学中两个集合的组合总数
+- 分类
+  - 连接查询
+    - 内连接：相当于查询集合A、B的交集部分数据
+    - 外连接：
+      - 左外连接：查询左表所有数据，以及两表交集部分
+      - 右外连接：查询右表所有数据，以及两表交集部分
+    - 自连接：当前表与自身的连接查询，自连接必须使用表的别名
+  - 子查询
+
+#### 内连接
+
+- 隐式内连接
+
+  ```mysql
+  select 字段列表 from 表1，表2 where conditions;
+  ```
+
+  
+
+- 显式内连接
+
+  ```mysql
+  select 字段列表 from 表1 [inner] join 表2  on 连接条件;
+  ```
+
+  
+
+#### 外连接
+
+- 左外连接
+
+  ```mysql
+  select 字段列表 from 表1 left [outer] join 表2 on conditions;
+  ```
+
+  
+
+- 右外连接
+
+  ```mysql
+  select 字段列表 from 表1 right [outer] join 表2 on conditions;
+  ```
+
+  
+
+#### 自连接
+
+- ```mysql
+  select colums from table_name join table_name  on conditions
+  ```
+
+  
+
+#### 子查询
+
+- SQL语句中嵌套select语句，为嵌套查询（子查询）
+
+- 结果分类
+
+  - 标量子查询
+
+    - 返回单值（数字、日期、字符串等等）
+    - 常见操作符 =,<>,>,>=,<,<=
+
+    
+
+  - 列子查询
+
+    - 返回的结果是一列（可以多行）
+
+    - 操作符：`IN` `NOT IN` `ANY` `SOME` `ALL`
+
+      | 操作符 |                      描述                      |
+      | :----: | :--------------------------------------------: |
+      |   IN   |          在指定的集合范围之内，多选一          |
+      | NOT IN |              不在指定的集合范围内              |
+      |  ANY   |       子查询返回列表中，任意一个满足即可       |
+      |  SOME  | 与`ANY` 等同，使用`SOME` 的地方都可以使用`ANY` |
+      |  ALL   |          子查询返回列表所有值必须满足          |
+
+      
+
+  - 行子查询
+
+    - 返回结果是一行（可多列）
+    - 常用操作符：= 、<> 、IN、NOT IN
+
+  - 表子查询
+
+- 位置分类
+
+  - where 、from 、select之后
+
+
+
+
+
+
+
+
 
 
 

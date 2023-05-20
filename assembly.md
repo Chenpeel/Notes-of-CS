@@ -1,6 +1,6 @@
-# 汇编语言
+# **汇编语言**
 
-## X86
+## 8086CPU
 
 ##### 一、基础知识
 
@@ -247,18 +247,653 @@
 
 ###### 数据段
 
-
+- 根据需要，自定一组内存单元为一个段
+- 用DS存放数据段的段地址
 
 ###### 栈
 
+- LIFO
+
 ###### CPU提供的栈机制
+
+- 指令
+  - POP 、 PUSH
+- CPU如何知道当前执行指令所在的位置（栈顶位置）
+  - `SS:SP`指向栈顶元素
+  - 当执行`push`指令时，SP=SP+2
+  - 当`pop`时，SP=SP-2
+  - 栈空时，SS:SP指向栈底
 
 ###### 栈顶超界问题
 
+- 8086CPU并不会保证对栈的操作不会超界，栈的最大容量为64KB
+
 ###### PUSH、POP指令
+
+- PUSH and POP
+
+  ```assembly
+  push register
+  pop regiter
+  
+  push segment-register
+  pop segment-register
+  
+  push memary
+  pop memary 
+  ```
+
+  
 
 ###### 栈段
 
+- 直接使用`mov ss,ax`可能会出现越界错误，由于CPU的保护模式
+
+##### 四、第一个程序
+
+###### 写出--->执行
+
+- edit
+- link
+- run
+
+###### 源程序
+
+- 伪指令
+  - `xxx segment` 与end 一块定义一个段，段始标志
+  - `xxx end`  段末标志
+    - ends是与segment成对使用的
+    - end 是整个程序结束标志
+  - `assume`
+    - “假设” 将有特定用途的段和相关的段寄存器关联起来
+- 源程序中的“程序”
+
+- ###### 标号
+
+  - 作为段名称
+
+- ###### 程序结构
+
+  - 
+
+    ```assembly
+    assume cs:abc
+    abc segment
+    mov ax,2
+    add ax,ax
+    add ax,ax
+    abc ends
+    end
+    ```
+
+    
+
+- ###### 程序返回
+
+  - 
+
+    ```assembly
+    mov ax ,4c00H
+    int 21H
+    ```
+
+    
+
+- ###### 语法错误和逻辑错误
+
+  - 逻辑错误很难纠错
+
+###### 编辑源程序
+
+- dos中运行edit
+  - 编辑保存为file.asm
+- 键入`masm file.asm` 
+  - 输出文件为file.obj
+- 键入`link file`
+  - 输出file.exe
+- 键入`debug file.exe`
+  - 跟踪显示运行
+  - 使用`-t`
+  - 直到 `INT 21`时用`p`结束
+
+
+
+##### 五、[BX]和loop指令
+
+###### [BX]
+
+```assembly
+mov ax,[bx]
+```
+
+- `bx` 中存放的数据作为偏移地址EA
+- 段地址SA默认在DS中
+- 将`SA:EA`处的数据送入ax中
+- 即`(ax) = ((ds)*16 + (bx))`
+
+```assembly
+mov [bx],ax
+```
+
+- bx中存放的数据作为偏移地址EA
+- 段地址SA默认在DS中
+- 将ax中的数据送入内存`SA:EA`中
+- 即`((ds)*16 + (bx)) = (ax)`
+
+<img src="/Users/alpha/Library/Application Support/typora-user-images/image-20230511004104259.png" alt="image-20230511004104259" style="zoom:25%;" />
+
+- `bx`内容自动加1
+
+  ```assembly
+  inc bx
+  ```
+
+###### loop
+
+- 格式`loop s`
+
+- 标号`s`实际上标识的是一个地址
+
+- 执行`loop s` 时，CPU须执行两步：
+
+  - `(cx) = (cx)-1`
+  - 判断`cx`中值，不为0则转至标号处执行指令
+
+  ```assembly
+  mov cx ,5
+  mov ax ,2
+  s:
+  	add ax,ax
+  loop s
+  ```
+
+- 在汇编程序中，数据不能以字母开头即`ffffH`应为`0ffffH`
+
+- `loop` 和` [BX]`可以实现**连续地址的内容**的处理
+
+###### debug 和 汇编编译器MASM对指令的不同处理
+
+- debug
+- masm编译的程序需要申请段、中断程序	
+
+
+
+###### 段前缀	
+
+- 用于显式的表示内存单元的段地址
+
+```assembly
+
+mov ax, ds:[bx]
+mov ax, cs:[bx]
+mov ax, ss:[bx]
+mov ax, es:[bx]
+mov ax, ss:[0]
+mov ax, cs:[0]
+
+```
+
+###### 代码访问内存空间的安全性
+
+- 随意访问内存单元可能会造成危害
+- 内存单元可能存储着系统数据或代码
+- 在CPU保护模式下的操作系统，一般不会直接访问重要的内存
+
+##### 六、多段程序
+
+- 一段空间一般包含64byte的容量
+- 如果段超过64byte ，如256byte就需要申请段
+- 分多段（数据段、代码段、栈段等等）
+
+###### 数据和代码段
+
+- 使用`start`和`end start` 来隔绝数据和代码
+
+  ```assembly
+  assume cs : code 
+  
+  code segment 
+  					|
+  					|
+  					;data
+  					|
+  					|
+  start : 
+  					|
+  					|
+  					;code
+  					|
+  					|
+  
+  code ends
+  
+  end start
+  ```
+
+###### 代码段中使用栈
+
+- 将栈操作放在代码段中
+
+###### 代码、数据、栈分段放入
+
+- 通过`cs:code` `ds:data ` `ss:stack` 实现对三个段的封装
+- 不可以`mov ds data`（data为段数据）不能直接将数据mov到寄存器ds中
+
+
+
+##### 七、灵活定位内存的方法
+
+###### `and` 和`or`指令
+
+- `and`逻辑与，按位与运算
+
+  ```assembly
+  mov al ,01100011B
+  and al ,00010010B
+  ```
+
+  
+
+- `or`  逻辑或，按位或运算
+
+  ```assembly
+  mov al,01100011B
+  or al,00010010B
+  ```
+
+###### ASCII码（美国标准信息交换码）（常见的）
+
+| Hex Code | Normal Language |
+| :------: | :-------------: |
+|   41H    |        A        |
+|   61H    |        a        |
+
+###### 以字符的形式给出数据
+
+- data段的数据为`db 'unix' ...` 会转码成ASCII码
+
+###### 大小写转换
+
+- 观察规律，在**二进制**位的**第五位为0** 就是大写字母，为**1** 则就是小写字母
+- 用`and` 和 `or`指令来操作使其相互转化
+
+###### `[bx+idata]` 
+
+- `mov ax,[bx+idata]` 表示一个内存单元，偏移地址为`(bx) + idata` 	
+- 即为 `(ax)  = ((dx)*16 + (bx)+idata)`
+- 常见格式如下
+  - `mov ax , [bx+200]`
+  - `mov ax , [200+bx]`
+  - `mov ax , 200[bx]`
+  - `mov ax , [bx].200` 
+- 通过`200[bx]` 的方式，可以实现类似高级语言中的数组机制
+  - C : 	`a[i] , b[i]`
+  - ASM: ` 0[bx] , 5[bx]`
+
+######  `SI ` 和`DI` 
+
+- `SI` 和`DI` 在8086CPU中，与`BX` 的功能相近
+  - 因此可以用`SI` 来取代`[BX]`中的bx
+- `SI` 和 `DI` 不能分成两个8位的寄存器
+
+###### `[bx+si] `和 `[bx+di]` 相似
+
+- 表示一个内存单元
+- 偏移地址为`(bx) +(si)`
+- 对于`mov ax,[bx+si]` 数学化描述为` (ax) = ((dx)*16+(bx)+(si))`
+  - `mov ax,[bx+si]`<==> `mov ax [bx][si]`
+
+###### `[bx+si+idata]`和`[bx+di+idata]`
+
+- 同样的，`[bx+si+idata]`也表示一个内存单元
+- 偏移地址为`(bx)+(si)+idata`
+- 段地址在`ds`中，偏移地址为`bx` 中的数值加上`si` 中的数值，再加上`idata`的数值
+- `mov ax,[bx+si+idata]`数学化描述为`(ax)= ((ds)*16+(bx)+(si)+idata)`
+- 也可写成以下格式：
+  - `mov ax,[bx+200+si]`
+  - `mov ax,[200+bx+si]`
+  - `mov ax,200[bx+si]`
+  - `mov ax,[bx].200[si]`
+  - `mov ax,[bx][si].200`
+
+##### 八、数据处理的两个基本问题
+
+- `reg` 和 `sreg` （寄存器和段寄存器）
+  - reg: ` ah,al,ax,bh,bl,bx,ch,cl,cx,dh,dl,dx,sp,bp,si,di`
+  - sreg:`ds,cs,ss,es`
+
+###### `BX` 、`SI`、 `DI`、 `BP`
+
+- 如下的指令是错误的指令
+
+  ```assembly
+  mov ax,[cx]
+  mov ax,[ax]
+  mov ax,[dx]
+  mov ax,[ds]
+  
+  ```
+
+- 即，在`[...]`中只能出现`bx,si,di,bp,idata`
+
+  - 并且只有以下的组合
+    - `bx ` & `si` 
+    - `bx` & `di`
+    - `bp` & `si`
+    - `bp` & `di`
+
+- 只要在`[...]`使用`bp` 而指令没有显式的给出段地址，段地址就默认存储在`ss`中
+
+###### 处理的数据在什么地方
+
+|  机器码  | 汇编指令   |  执行前数据的位置   |
+| :------: | ---------- | :-----------------: |
+| 8E1E0000 | mov bx,[0] |   内存，ds:0单元    |
+|   89C3   | mov bx,ax  |  CPU内部，ax寄存器  |
+|  BB0100  | mov bx,1   | CPU内部，指令缓冲器 |
+
+###### 三种数据位置表达
+
+- 立即数（`idata` ）
+
+  ```assembly
+  mov ax,1
+  add bx,2000h
+  or bx,00010000b
+  mov al,'a'
+  ```
+
+  
+
+- 寄存器（...）
+
+  ```assembly
+  mov ax,bx
+  mov ds,ax
+  push bx
+  mov ds:[0],bx
+  push ds
+  mov ss,ax
+  mov sp,ax
+  ```
+
+  
+
+- 段地址和偏移地址（`SA:EA`）
+
+  - 默认存储在`ds`中
+
+    ```assembly
+    mov ax,[0]
+    mov ax,[di]
+    mov ax,[bx+8]
+    mov ax,[bx+si]
+    mov ax,[bx+si+8]
+    ```
+
+  - 默认存储在`ss`中
+
+    ```assembly
+    mov ax ,ds:[bp]
+    mov ax, es:[bx]
+    mov ax,ss:[bx+si]
+    mov ax,cs:[bx+si+8]
+    ```
+
+  ###### 寻址方式
+
+  - 直接寻址  
+    - `[idata]`
+  - 寄存器间接寻址 
+    - `[bx]`
+  - 寄存器相对寻址  
+    -  `[bx].idata` 用于结构体
+    -  `idata[si] | idata[di] `用于数组
+    - `[bx][idata]` 用于二维数组
+  - 基址变址寻址
+    - `[bx][si]` 用于二维数组
+  - 相对基址变址寻址
+    - `[bx].idata[si]`用于表格（结构）中的数组项
+    - `idata[bx][si]`用于二维数组
+
+  
+
+  ###### 指令处理数据的长度
+
+  - byte 和 word
+
+  - 在没有寄存器名存在的情况下，用 `X ptr`指明内存单元的长度
+  
+    -  `byte ptr`
+  
+      ```assembly
+      mov byte ptr ds:[0],1
+      inc byte ptr [bx]
+      inc byte ptr ds:[0]
+      add byte ptr [bx],2
+      ```
+  
+    - `word ptr`
+  
+      ```assembly
+      mov word ptr ds:[0],1
+      inc word ptr [bx]
+      inc word ptr ds:[0]
+      add word ptr [bx],2
+      ```
+
+###### 寻址方式的综合
+
+
+
+```c
+// c风格
+
+struct company{
+  char cn[3];
+  char hn[9];
+  int pm;
+  int sr;
+  char sp[3];
+};
+struct company dec = {"DEC","Ken Olsen",137,40,"POP"};
+
+int main(){
+  int i ;
+  dec.pm = 38;
+  dec.sr = dec.sr+70;
+  i =0;
+  dec.cp[i]='V';
+  i++;
+  dec.cp[i]='A';
+  i++;
+  dec.cp[i]='X';
+  return 0;
+}
+```
+
+用汇编改写：
+
+```assembly
+mov ax,seg
+mov ds,ax
+mov bx,60h
+
+mov word ptr [bx].0ch,38
+add word ptr [bx].ceh,70
+
+mov si ,0 
+mov byte ptr [bx].10h[si],'V'
+inc si
+mov byte ptr [bx].10h[si],'A'
+inc si 
+mov byte ptr [bx].10h[si],'X'
+
+```
+
+###### `div`指令
+
+- 除数
+
+  - 8位
+  - 16位
+
+- 被除数，默认放在 **AX** 或 **DX和AX** 中
+
+  - 除数8位、被除数16位，则默认放在AX中存放
+  - 除数16位、被除数32位，则DX存放高位，AX存放低位
+
+- 结果
+
+  - 除数8位，AL存储商、AH存储余数 
+  - 除数16位，AX存储商、DX存储余数
+
+- eg: 
+
+  ```assembly
+  mov dx,1
+  mov ax,86A1h
+  mov bx,100
+  div bx
+  ```
+
+  执行后`(ax) = 03E8H ,(dx)=1`
+
+
+
+###### 伪指令`dd` `db` `dw`
+
+- `dd` 用来定义双字数据
+
+  ```assembly
+  data segment 
+  dd 100001
+  dw 100
+  db 0
+  data ends
+  ```
+
+- `db` ` dw` 用来定义字节型数据和字型数据
+
+###### `dup` 
+
+- `dup`是一个操作符，配合数据定义的伪指令使用
+
+- 减少重复输入数据的冗余
+
+  ```assembly
+  ;times是数据的重复次数
+  db times dup (0,1,2)
+  dw times dup (0,1,2)
+  dd times dup (0,1,2)
+  ```
+
+
+
+#####  九、转移指令
+
+###### 操作符offset
+
+- 功能，取得标号位的偏移地址
+
+- `start: mov ax,offset start` 相当于`mov ax,0`
+
+-  `s: mov ax,offset s`  相当于`mov ax,3`
+
+  ```assembly
+  assume cs:code 
+  code segment
+  
+  start : mov ax,offset start 
+  		s : mov ax,offset s
+  		
+  code ends
+  
+  end start 
+  ```
+
+  - `start `  和 `s` 就是其标号
+
+###### `jmp`指令
+
+- 无条件转移指令，可以修改`IP`或`CS:IP`
+- `jmp 0:0x7c00` ......BIOS开始引导操作系统
+- `jmp reg`
+  - `jmp ax`  ...
+- `jmp short s`
+  - 实现段内短转移，范围**-128~127**
+    - 超过范围会触发编译器的超界检测，从而报错
+  - 可以替代`loop s`
+- `jmp near ptr s`
+  - 实现`(IP)=(IP)+16`位位移
+  - 段内近转移
+- `jmp far ptr s `
+  - 段间转移（远转移）
+- 转移地址在内存中的jmp使用
+  - `jmp word ptr ds:[0]`段内转移
+    - 功能：从内存单元地址处开始存放一个字，是转移的目的偏移地址
+  - `jmp dword ptr ds:[0]`段间转移
+    - 功能：从内存单元地址处开始存放着两个字
+      - 高地址处的字是目的段地址 	`(CS) = (addr+2)`
+      - 低地址处的字是目的偏移地址 `(IP) = (addr)`
+
+###### `JCXZ`指令
+
+- 有条件转移指令，短转移，IP修改范围**-128～127**
+- 功能：JCXZ = JMP  CX  ZERO? 或者 `if ((cx)==0) jmp short s `
+  - 通过`jcxz s0`和`jmp short s`可以实现`loop s`的替换
+
+###### 根据位移进行转移的意义
+
+- 对IP的修改是通过位移来确定地址，这种设计，便于程序段在内存中的浮动装配，方便程序的可移植性，即，在程序中使用相对地址，来规避s地址可能的改变
+  - `jmp short s`
+  - `jmp near ptr s`
+  - `jcxz s`
+  - `loop s`
+
+##### 十、CALL和RET指令
+
+###### ret和retf
+
+- `ret`指令用栈中的数据，修改`IP`中的内容，从而实现近转移==---->== `POP IP`
+  - `(IP) = ((SS)*16 + (SP))`
+  - `(SP) = (SP)+2 `
+- `retf`指令用栈中的数据，修改 `IP` 和`CS`中的内容，从而实现远转移 ==---->== `POP IP` + `POP CS`
+  - `(IP) = ((SS)*16 + (IP))`
+  - `(SP) = (SP) + 2`
+  - `(CS) = ((SS)*16 + (SP)) `
+  - `(SP) = (SP) + 2 `
+
+###### `call`指令
+
+- `call`指令通过位移转移，可实现子程序唤醒
+  - `POP IP (POP CS:IS)`
+  - `JMP CS:IP (JMP IP)` ==<=>== `JMP near ptr s`
+- CPU执行`call s`时（将IP压入栈、转到标号处执行指令）进行的如下操作
+  - `(SP) = (SP) - 2  ` ==->== `((SS)*16 + (SP)) = (IP)`
+  - `(IP) = (IP) + 16`位 位移
+- `call far ptr s`实现段间转移
+  - ==<=>==  `push CS `==->== `push IP` ==->== `jmp far ptr s`
+    - `(SP) = (SP) - 2 ` ==->== `((SS)*16 + (SP)) = (CS)` ==->== `(SP) = (SP) - 2 ` ==->== `((SS)*16 + (SP)) = (IP)` 
+    - `(CS) = (CS(s))` ==->== `(IP) = (IP(s))` 
+- `call reg(16 bit)` 
+  - ==<=>== `push IP` ==->== `jmp reg(16 bit)`
+  - 功能：
+    - `(SP) = (SP) - 2`
+    - `((SS)*16 + (SP)) = (IP) `
+    - `(IP) = (reg(16 bit))` 
+- `call word ptr ds:[idata]`
+  - ==<=>== `push IP` ==->== `jmp word ptr ds:[idata]` 
+  - 功能：
+    - `(SP) = (SP)-2` 
+    - ...
+- `call dword ptr ds:[idata]` 
+  - ==<=>== `push CS` ==->== `push IP` ==->== `jmp dword ptr ds:[idata]` 
+  - 功能：
+    - `(SP) = (SP) - 4 ` 
+    - ...
+
+###### `call`和`ret`指令的配合使用
 
 
 
@@ -272,6 +907,19 @@
 
 
 
+##### 十一、标志寄存器
+
+##### 十二、内中断
+
+##### 十三、int指令
+
+##### 十四、端口
+
+##### 十五、外中断
+
+##### 十六、直接定址表
+
+##### 十七、使用BIOS进行键盘输入和磁盘读写
 
 
 
@@ -283,31 +931,57 @@
 
 
 
-##### 第一个程序
+## Dosbox 实操
 
-##### [BX]和loop指令
+| 命令 | 内容                                                         |
+| ---- | ------------------------------------------------------------ |
+| R    | 查看、改变CPU寄存器内容                                      |
+| D    | 查看内存中的内容                                             |
+| E    | 改写内存中的内容                                             |
+| U    | 将内存中的内容单一为汇编指令                                 |
+| T    | 执行一条机器指令                                             |
+| A    | 以汇编指令格式在内存中写入一条机器指令                       |
+| P    | debug 一个可执行的程序中断（int 21h）时，以结束程序（仍在debug内） |
 
-##### 多段程序
 
-##### 定位内存的方法
 
-##### 数据处理的两个基本问题
 
-##### 转移指令
 
-##### CALL和RET指令
+###  实验九
 
-##### 标志寄存器
+###### 显示
 
-##### 内中断
+通常情况下，显示器缓冲区分为8页
 
-##### int指令
+默认显示第0页
 
-##### 端口
+即通常情况下，B8000H ~ B8F9FH 中的4000个字节的内容将出现在显示器上
 
-##### 外中断
+- 偏移000 ~ 09F对应显示器的第一行（80个字符占160个字节）
+- 00 ~ 01单元对应显示器上的第一列（以此类推，9E ~ 9F 对应第80列） 
 
-##### 直接定址表
+###### 属性字节格式
 
-##### 使用BIOS进行键盘输入和磁盘读写
+` 7	 6	5  4	3	 2	1  0 `
+
+ <u>BL</u> 	<u> R  G  B</u>     	I   	<u>R  G  B</u> 
+
+闪烁	  背景		高亮   	 前景
+
+- Eg: 
+  - 红底绿字：01000010B
+  - 红底闪烁绿字：11000010B
+  - 红底高亮绿字：01001010B
+  - 黑底白字：00000011B
+  - 白底蓝字：01110001B
+
+
+
+
+
+
+
+
+
+
 
