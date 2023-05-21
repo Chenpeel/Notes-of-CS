@@ -893,21 +893,96 @@ mov byte ptr [bx].10h[si],'X'
     - `(SP) = (SP) - 4 ` 
     - ...
 
-###### `call`和`ret`指令的配合使用
+###### `call` 和 `ret`指令配合使用
 
+- 两个指令的配合实现了调用和返回的效果
+- 由call指令将下一条指令IP push到栈，调用子程序
+- 再由ret指令将pop 到IP实现返回
 
+###### `mul` 指令
 
+- 8位和16位乘法，其中一个乘数默认放在AX（DX、AX）中
+- `mul reg`  or  `mul ds:[addr]` 
+  - `mul byte ptr ds:[0]`  --->  `(ax)=(al) * ((ds)*16+0)`
+  - `mul word ptr [bx+si+8]`
+    - ---> `(ax) = (ax)*((ds)*16 + (bx) + 8 )` (lower 16) 
+    - --->`(dx) = (ax)*((ds)*16 + (bx) + 8 )` (higher 16)
 
+###### 模块化设计
 
+模块化设计应该考虑参数处理等一定的事务
 
-
-
-
-
-
-
+- 参数存储
+- 期望返回值存储
+- 寄存器冲突
+  - 子程序使用的寄存器可能在主程序中也在使用
+  - 可以在子程序调用前使用栈来存储寄存器数据
 
 ##### 十一、标志寄存器
+
+###### 8086CPU的flag寄存器的结构
+
+<img src="/Users/alpha/Library/Application Support/typora-user-images/image-20230522011420055.png" alt="image-20230522011420055" style="zoom:50%;" />
+
+- flag中0、2、4、6、7、8、9、10、11位具有特殊的含义
+
+
+
+###### ZF标志（zero flag）
+
+- 零标志位（第 6 位）
+- 运行相关指令后，判断其结果
+  - 结果不为0，则`ZF = 0` 反之，`ZF = 1`
+- `ZF`可能产生变化的指令：add、sub、mul、div、inc、or、and...（mov、push、pop...很难产生ZF变化）
+
+###### PF标志（prime flag）
+
+- 奇偶标志位（第 2 位）
+- 运行相关指令后，判断结果
+  - 偶数个1，`PF=1`  ；	奇数个1，则`PF = 0 `
+
+###### SF标志（symbol flag）
+
+- 符号标志位（第 7 位）
+- 运行相关指令后，判断结果
+  - 结果为负，`SF=1` ； 结果为正，`SF = 0`
+
+###### CF标志 （carry flag）
+
+- 进位标志位（第 0 位）
+- 用CF来标志溢出进位和借位减法
+  - 产生进位或借位，`CF=1` ,否则，`CF = 0 `
+
+###### OF标志 （over-full flag）
+
+- 溢出标志位（第 11 位）
+- 记录结果是否发生溢出
+  - 溢出，则`OF=1`否则`OF=0`
+
+###### adc标志
+
+- 带进位的加法指令
+- `adc ax, bx` ----> `(ax)=(ax)+(bx)+CF`
+
+###### sbb标志
+
+- 带借位的减法指令
+- `sbb ax, bx`-----> `(ax)= (ax) -(bx) -CF`
+
+###### cmp标志
+
+- 比较指令
+- `cmp ax , ax` -->  ZF  PF  SF  CF  OF
+- ax = 8,bx = 3 -> `cmp ax ,bx` --> ...
+  - if ax = bx , ZF =1
+  - if ax ≠ bx , ZF =0
+  - if ax < bx , CF =1
+  - if ax ≥ bx , CF =0
+  - if ax > bx , CF=0 && ZF=0
+  - if ax ≤ bx , CF =1 ||  ZF =1
+- 不修改寄存器的值，只改变flag中的值
+
+
 
 ##### 十二、内中断
 
