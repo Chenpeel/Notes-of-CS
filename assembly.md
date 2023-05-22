@@ -52,7 +52,7 @@
 - 地址总线数（N）决定了CPU寻址能力
 - 寻址单元数（$2^N$）
 
-<img src="../pics/image-20230425221719557.png" alt="image-20230425221719557" style="zoom:25%;" />
+<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230425221719557.png" alt="image-20230425221719557" style="zoom:25%;" />
 
 ###### 数据总线
 
