@@ -118,11 +118,11 @@
   truncate table table_name;
   ```
 
-![image-20230422232140753](/Users/alpha/Library/Application Support/typora-user-images/image-20230422232140753.png)
+![image-20230422232140753](https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230422232140753.png)
 
-![image-20230422232634397](/Users/alpha/Library/Application Support/typora-user-images/image-20230422232634397.png)
+![image-20230422232634397](https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230422232634397.png)
 
-![image-20230422232846561](/Users/alpha/Library/Application Support/typora-user-images/image-20230422232846561.png)
+![image-20230422232846561](https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230422232846561.png)
 
 ## DML
 

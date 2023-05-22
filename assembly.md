@@ -380,7 +380,7 @@ mov [bx],ax
 - 将ax中的数据送入内存`SA:EA`中
 - 即`((ds)*16 + (bx)) = (ax)`
 
-<img src="/Users/alpha/Library/Application Support/typora-user-images/image-20230511004104259.png" alt="image-20230511004104259" style="zoom:25%;" />
+<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230511004104259.png" alt="image-20230511004104259" style="zoom:25%;" />
 
 - `bx`内容自动加1
 
@@ -922,7 +922,7 @@ mov byte ptr [bx].10h[si],'X'
 
 ###### 8086CPU的flag寄存器的结构
 
-<img src="/Users/alpha/Library/Application Support/typora-user-images/image-20230522011420055.png" alt="image-20230522011420055" style="zoom:50%;" />
+<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230522011407039.png" alt="image-20230522011420055" style="zoom:50%;" />
 
 - flag中0、2、4、6、7、8、9、10、11位具有特殊的含义
 
