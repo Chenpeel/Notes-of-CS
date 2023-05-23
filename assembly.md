@@ -1052,7 +1052,113 @@ mov byte ptr [bx].10h[si],'X'
 
 
 
+## All Instuctions
 
+### 数据传送指令
+
+| 指令  |        操作         |                          功能                           |
+| :---: | :-----------------: | :-----------------------------------------------------: |
+|  MOV  |      MOV AX,BX      |                         (move)                          |
+| MOVS  | MOVSB、MOVSW、MOVSD |               move byte/word/double_word                |
+| XCHG  |     XCHG AX,BX      |                   exchange AX and BX                    |
+| PUSH  |       push ax       |                   push ax into stack                    |
+|  POP  |       pop ax        |                    pop ax from stack                    |
+| PUSHF |        pushf        |                  push flag into stack                   |
+| POPF  |        popf         |                   pop flag from stack                   |
+|  IN   |                     |                                                         |
+|  OUT  |                     |                                                         |
+|  LEA  |    LEA reg , mem    |          load effective address仅计算有效地址           |
+|  LDS  |                     |                        指针DS:SI                        |
+|  LES  |                     | les指令将指定内存单元中的值解释成指向段地址和位移的指针 |
+| LAHF  |                     |                                                         |
+| SAHF  |                     |                                                         |
+| CMPS  |                     |                                                         |
+| LODS  |                     |                                                         |
+| STOS  |                     |                                                         |
+| EQU $ |                     |                     计算程序段长度                      |
+
+
+
+### 算数运算指令
+
+| 指令 |    操作     |                          功能                          |
+| :--: | :---------: | :----------------------------------------------------: |
+| ADD  |             |                                                        |
+| ADC  |             |                                                        |
+| SUB  |             |                                                        |
+| SBB  |             |                                                        |
+| INC  |             |                                                        |
+| DEC  |             |                                                        |
+| NEG  | NEG reg/mem | 将操作数按照补码方式存储、取反、结果返回原始操作数位置 |
+| CMP  |             |                                                        |
+| MUL  |             |                                                        |
+| IMUL |             |                                                        |
+| DIV  |             |                                                        |
+| IDIV |             |                                                        |
+
+
+
+### 逻辑指令
+
+|  指令   |           操作           |               功能               |
+| :-----: | :----------------------: | :------------------------------: |
+|   AND   |                          |                                  |
+|   OR    |                          |                                  |
+|   XOR   |                          |                                  |
+|   NOT   |                          |                                  |
+|  TEST   | TEST destination ,source | 按位与后的结果存储在标志寄存器中 |
+| SHL/SLA |                          |                                  |
+|   SHR   |                          |                                  |
+|   SAL   |                          |                                  |
+|   SAR   |                          |                                  |
+
+
+
+### 转移指令
+
+| 指令 | 操作 |                             功能                             |
+| :--: | :--: | :----------------------------------------------------------: |
+| JMP  |      |                                                              |
+| JCC  |      |                                                              |
+| LOOP |      |                                                              |
+| CALL |      |                                                              |
+| RET  |      |                                                              |
+| IRET |      |                                                              |
+| INT  |      |                                                              |
+| INTO |      |                                                              |
+|  JS  |      |                   if SF jmp else continue                    |
+|  JC  |      |                   if  CF jmp else continue                   |
+| JNBE |      |            if not CF and not ZF jmp else continue            |
+| JNLE |      | （jump if not less or equal）if not ZF and SF = OF jmp else continune |
+
+
+
+
+
+### 处理机控制指令
+
+| 指令 | 操作 | 功能 |
+| :--: | :--: | :--: |
+| HLT  |      |      |
+| WAIT |      |      |
+| ESC  |      |      |
+| LOCK |      |      |
+
+
+
+### 串处理指令
+
+| 指令  | 操作 | 功能 |
+| :---: | :--: | :--: |
+| MOVSB |      |      |
+| MOVSW |      |      |
+| CMPSB |      |      |
+| CMPSW |      |      |
+| STOSB |      |      |
+| STOSW |      |      |
+| LODSB |      |      |
+| LODSW |      |      |
+|  REP  |      |      |
 
 
 
