@@ -2,7 +2,7 @@
 
 
 
-## <a name="其他命令基本相同或相似">CentOS 7</a>
+## CentOS 7
 
 ##### shell basic commands
 
@@ -263,7 +263,7 @@
 
 ## Ubuntu
 
-##### <a>其他命令基本相同或相似</a>
+##### 其他命令基本与[CentOS](##"CentOS 7")相同或相似
 
 ##### apt (Advanced Packaging Tools) 包管理
 
