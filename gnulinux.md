@@ -2,7 +2,7 @@
 
 
 
-## CentOS 7
+## <a name="其他命令基本相同或相似">CentOS 7</a>
 
 ##### shell basic commands
 
@@ -263,11 +263,14 @@
 
 ## Ubuntu
 
-
+##### <a>其他命令基本相同或相似</a>
 
 ##### apt (Advanced Packaging Tools) 包管理
 
-- [更改apt安装源]()
+- [更改apt安装源](https://github.com/Chenpeel/Notes-of-CS/blob/master/shsh/apt_repo_change.sh)
+  - 将apt_repo_change.sh复制到本地
+  - terminal键入`sh apt_repo_change.sh` 即可执行（Ubuntu 20版本）
+  - [其他版本(清华镜像)](http://mirrors.ustc.edu.cn)
 
 
 
