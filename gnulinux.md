@@ -30,7 +30,7 @@
 - `cat [] filename` (catch file)  `[-n]` options 
 - `head -n 10` first 10 lines
 - `tail -n 12` last 12 lines
-  -  `tail -f file`  实时跟踪文件信息，[vim操作](https://github.com/Chenpeel/Notes-of-CS/blob/master/vim.md)不会更新
+  -  `tail -f file`  实时跟踪文件信息，而执行[vim操作](https://github.com/Chenpeel/Notes-of-CS/blob/master/vim.md)却不会更新
 - `more file`
 - `less file` 
 - `echo string` 
@@ -247,7 +247,7 @@
 ##### RPM (Redhat Package Manager)
 
 - firefox-102.10.0-1.el9.aarch64
-  - `app_name - version . 硬件平台. rpm``
+  - `app_name - version . 硬件平台. rpm`
 - `rpm -qa` (query all)  
 - `rpm -qi app_name ` (query info)
 - `rpm -e --nodeps app_name`  (no depandence) 卸载程序
