@@ -263,9 +263,11 @@
 
 ## Ubuntu
 
-##### 其他命令基本与[CentOS](##"CentOS 7")相同或相似
+##### Commands
 
-##### apt (Advanced Packaging Tools) 包管理
+- 其他命令基本与[CentOS](#CentOS 7)相同或相似
+
+##### APT (Advanced Packaging Tools) 包管理
 
 - [更改apt安装源](https://github.com/Chenpeel/Notes-of-CS/blob/master/shsh/apt_repo_change.sh)
   - 将apt_repo_change.sh复制到本地
