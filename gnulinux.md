@@ -265,7 +265,7 @@
 
 ##### Commands
 
-- 其他命令基本与[CentOS](#CentOS 7)相同或相似
+- 其他命令基本与 [CentOS](#CentOS 7) 相同或相似
 
 ##### APT (Advanced Packaging Tools) 包管理
 
