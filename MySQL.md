@@ -47,7 +47,7 @@
 | DQL  |    Data Query Language     |          数据查询语言，用来查询数据库中表的记录          |
 | DCL  |   Data Control Language    |  数据控制语言，用来创建数据库用户、控制数据库的访问权限  |
 
-## SQL语法：
+## SQL语法<a id="SQL语法"></a>：
 
 ### DDL
 
@@ -60,6 +60,8 @@
   select database;	--当前数据库
   ```
 
+  
+  
 - 创建
 
   ```mysql
