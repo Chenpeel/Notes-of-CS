@@ -4,7 +4,7 @@
 ### $\int \frac {x\sin{x}} {(x\cos{x} - \sin {x})^2 } $
 
 
-### $\iint\limits_{D} \ln{(1+x^2+y^2)} d\rho$     $ D ={\set{(\rho,\theta)| 0\le\rho\le 1 , 0\le\theta\le{\frac{\pi}{2}}}} $
+### $$\iint\limits_{D} \ln{(1+x^2+y^2)} d\rho $$   ,    $$ D ={\set{(\rho,\theta)| 0\le\rho\le 1 , 0\le\theta\le{\frac{\pi}{2}}}} $$
 
 
 ### $D_1 =\set{ {(x,y)|0\le y \le \sqrt{a x - x^2}},0 \le x\le a } = \set{(\rho,\theta)|0\le \rho \le a \cos\theta , 0\le \theta \le \frac{\pi}{2}}$
