@@ -201,7 +201,7 @@
   - "[ ]"说明操作对象是一个内存单元，"address"表示内存单元的**偏移地址**是'address'
 
 - 在执行指令时，CPU自动取DS中的数据作为段地址
-- 另外，8086CPU不支持直接将数据送入段寄存器的操作（可能是硬件层面问题，[见知乎大佬的回答](https://www.zhihu.com/question/43608287)）
+- 另外，8086CPU不支持直接将数据送入段寄存器的操作（可能是硬件层面问题，[见知乎大佬解答](https://www.zhihu.com/question/43608287)）
 
 ###### 字的传送
 
@@ -855,10 +855,10 @@ mov byte ptr [bx].10h[si],'X'
 
 ###### ret和retf
 
-- `ret`指令用栈中的数据，修改`IP`中的内容，从而实现近转移==---->== `POP IP`
+- `ret`指令用栈中的数据，修改`IP`中的内容，从而实现近转移----> `POP IP`
   - `(IP) = ((SS)*16 + (SP))`
   - `(SP) = (SP)+2 `
-- `retf`指令用栈中的数据，修改 `IP` 和`CS`中的内容，从而实现远转移 ==---->== `POP IP` + `POP CS`
+- `retf`指令用栈中的数据，修改 `IP` 和`CS`中的内容，从而实现远转移 ----> `POP IP` + `POP CS`
   - `(IP) = ((SS)*16 + (IP))`
   - `(SP) = (SP) + 2`
   - `(CS) = ((SS)*16 + (SP)) `
@@ -868,27 +868,27 @@ mov byte ptr [bx].10h[si],'X'
 
 - `call`指令通过位移转移，可实现子程序唤醒
   - `POP IP (POP CS:IS)`
-  - `JMP CS:IP (JMP IP)` ==<=>== `JMP near ptr s`
+  - `JMP CS:IP (JMP IP)` <==> `JMP near ptr s`
 - CPU执行`call s`时（将IP压入栈、转到标号处执行指令）进行的如下操作
-  - `(SP) = (SP) - 2  ` ==->== `((SS)*16 + (SP)) = (IP)`
+  - `(SP) = (SP) - 2  ` ----> `((SS)*16 + (SP)) = (IP)`
   - `(IP) = (IP) + 16`位 位移
 - `call far ptr s`实现段间转移
-  - ==<=>==  `push CS `==->== `push IP` ==->== `jmp far ptr s`
-    - `(SP) = (SP) - 2 ` ==->== `((SS)*16 + (SP)) = (CS)` ==->== `(SP) = (SP) - 2 ` ==->== `((SS)*16 + (SP)) = (IP)` 
-    - `(CS) = (CS(s))` ==->== `(IP) = (IP(s))` 
+  - <==>  `push CS `----> `push IP` ----> `jmp far ptr s`
+    - `(SP) = (SP) - 2 ` ----> `((SS)*16 + (SP)) = (CS)` ----> `(SP) = (SP) - 2 ` ----> `((SS)*16 + (SP)) = (IP)` 
+    - `(CS) = (CS(s))` ----> `(IP) = (IP(s))` 
 - `call reg(16 bit)` 
-  - ==<=>== `push IP` ==->== `jmp reg(16 bit)`
+  - <==> `push IP` ----> `jmp reg(16 bit)`
   - 功能：
     - `(SP) = (SP) - 2`
     - `((SS)*16 + (SP)) = (IP) `
     - `(IP) = (reg(16 bit))` 
 - `call word ptr ds:[idata]`
-  - ==<=>== `push IP` ==->== `jmp word ptr ds:[idata]` 
+  - <==> `push IP` ----> `jmp word ptr ds:[idata]` 
   - 功能：
     - `(SP) = (SP)-2` 
     - ...
 - `call dword ptr ds:[idata]` 
-  - ==<=>== `push CS` ==->== `push IP` ==->== `jmp dword ptr ds:[idata]` 
+  - <==> `push CS` ----> `push IP` -----> `jmp dword ptr ds:[idata]` 
   - 功能：
     - `(SP) = (SP) - 4 ` 
     - ...
@@ -984,7 +984,55 @@ mov byte ptr [bx].10h[si],'X'
 
 
 
+
+
 ##### 十二、内中断
+
+###### 中断的产生
+
+* 除法错误： 0
+* 单步执行： 1
+* 执行`into` 指令 ： 4
+* 执行`int`  指令 ： `int [num]`
+
+###### 中断处理程序
+
+- CPU收到中断信息后，需要对中断信息进行处理
+- CPU在收到中断信息后，转去执行该中断信息的处理程序
+
+###### 中断向量表
+
+- CPU用8位的中断类型码通过中断向量表来找到对应的中断处理入口
+- 中断向量表中存放了256个中断源来对应中断处理程序的入口
+- 中断向量表的位置必须是固定的，方便CPU读取
+  - 8086CPU中，中断向量表存放在内存地址0处，即从`0000:0000` 到`0000:03FF`单元
+
+###### 中断过程
+
+- CPU在收到中断信息后，先引发中断过程，由[硬件在完成中断过程](./POCC.md/#)后，`CS:IP` 指向中断处理程序入口
+- 与`call`指令类似的，执行中断后，要恢复原来程序运行，就需要将原本的`CS:IP`进行入栈操作，如下
+  - 从中断信息获取中断类型码
+  - 标志寄存器入栈
+  - 设置`TF`、`IF`值为0 
+  - `CS`入栈
+  - `IP`入栈
+  - 取中断向量表中对应的地址放入`CS:IP` 
+
+###### 中断处理程序和`iret`指令
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##### 十三、int指令
 
@@ -1020,8 +1068,6 @@ mov byte ptr [bx].10h[si],'X'
 
 
 
-
-
 ###  实验九
 
 ###### 显示
@@ -1039,11 +1085,11 @@ mov byte ptr [bx].10h[si],'X'
 
 ` 7	 6	5  4	3	 2	1  0 `
 
- <u>BL</u> 	<u> R  G  B</u>     	I   	<u>R  G  B</u> 
+ <u>BL</u> 	<u> R  G  B</u>     	I   		<u>R  G  B</u> 
 
 闪烁	  背景		高亮   	 前景
 
-- Eg: 
+- eg: 
   - 红底绿字：01000010B
   - 红底闪烁绿字：11000010B
   - 红底高亮绿字：01001010B
@@ -1052,117 +1098,11 @@ mov byte ptr [bx].10h[si],'X'
 
 
 
-## All Instuctions
-
-### 数据传送指令
-
-| 指令  |        操作         |                          功能                           |
-| :---: | :-----------------: | :-----------------------------------------------------: |
-|  MOV  |      MOV AX,BX      |                         (move)                          |
-| MOVS  | MOVSB、MOVSW、MOVSD |               move byte/word/double_word                |
-| XCHG  |     XCHG AX,BX      |                   exchange AX and BX                    |
-| PUSH  |       push ax       |                   push ax into stack                    |
-|  POP  |       pop ax        |                    pop ax from stack                    |
-| PUSHF |        pushf        |                  push flag into stack                   |
-| POPF  |        popf         |                   pop flag from stack                   |
-|  IN   |                     |                                                         |
-|  OUT  |                     |                                                         |
-|  LEA  |    LEA reg , mem    |          load effective address仅计算有效地址           |
-|  LDS  |                     |                        指针DS:SI                        |
-|  LES  |                     | les指令将指定内存单元中的值解释成指向段地址和位移的指针 |
-| LAHF  |                     |                                                         |
-| SAHF  |                     |                                                         |
-| CMPS  |                     |                                                         |
-| LODS  |                     |                                                         |
-| STOS  |                     |                                                         |
-| EQU $ |                     |                     计算程序段长度                      |
-
-
-
-### 算数运算指令
-
-| 指令 |    操作     |                          功能                          |
-| :--: | :---------: | :----------------------------------------------------: |
-| ADD  |             |                                                        |
-| ADC  |             |                                                        |
-| SUB  |             |                                                        |
-| SBB  |             |                                                        |
-| INC  |             |                                                        |
-| DEC  |             |                                                        |
-| NEG  | NEG reg/mem | 将操作数按照补码方式存储、取反、结果返回原始操作数位置 |
-| CMP  |             |                                                        |
-| MUL  |             |                                                        |
-| IMUL |             |                                                        |
-| DIV  |             |                                                        |
-| IDIV |             |                                                        |
-
-
-
-### 逻辑指令
-
-|  指令   |           操作           |               功能               |
-| :-----: | :----------------------: | :------------------------------: |
-|   AND   |                          |                                  |
-|   OR    |                          |                                  |
-|   XOR   |                          |                                  |
-|   NOT   |                          |                                  |
-|  TEST   | TEST destination ,source | 按位与后的结果存储在标志寄存器中 |
-| SHL/SLA |                          |                                  |
-|   SHR   |                          |                                  |
-|   SAL   |                          |                                  |
-|   SAR   |                          |                                  |
-
-
-
-### 转移指令
-
-| 指令 | 操作 |                             功能                             |
-| :--: | :--: | :----------------------------------------------------------: |
-| JMP  |      |                                                              |
-| JCC  |      |                                                              |
-| LOOP |      |                                                              |
-| CALL |      |                                                              |
-| RET  |      |                                                              |
-| IRET |      |                                                              |
-| INT  |      |                                                              |
-| INTO |      |                                                              |
-|  JS  |      |                   if SF jmp else continue                    |
-|  JC  |      |                   if  CF jmp else continue                   |
-| JNBE |      |            if not CF and not ZF jmp else continue            |
-| JNLE |      | （jump if not less or equal）if not ZF and SF = OF jmp else continune |
 
 
 
 
+## Apple Silion M 
 
-### 处理机控制指令
-
-| 指令 | 操作 | 功能 |
-| :--: | :--: | :--: |
-| HLT  |      |      |
-| WAIT |      |      |
-| ESC  |      |      |
-| LOCK |      |      |
-
-
-
-### 串处理指令
-
-| 指令  | 操作 | 功能 |
-| :---: | :--: | :--: |
-| MOVSB |      |      |
-| MOVSW |      |      |
-| CMPSB |      |      |
-| CMPSW |      |      |
-| STOSB |      |      |
-| STOSW |      |      |
-| LODSB |      |      |
-| LODSW |      |      |
-|  REP  |      |      |
-
-
-
-
-
-
+ps:我使用的是M系列芯片的Mac, 学习8086CPU的汇编语言时，相关文件见files中的[dosbox_for_MacOS](./files/dosbox_for_MacOS/dosbox_needed.md)
 

@@ -1,13 +1,13 @@
 - [x] ## **C++**
 
 
-- [ ] ## **Git/Github**
+- [x] ## **Git/Github**
 
 
 - [ ] ## **bat/dos**
 
 
-- [ ] ## **shell/linux**
+- [x] ## **shell/linux**
 
 
 - [ ] ## **Python**
