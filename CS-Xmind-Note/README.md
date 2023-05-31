@@ -1,1 +1,1 @@
-# This folder is pulled from others
+# This directory is pulled from others

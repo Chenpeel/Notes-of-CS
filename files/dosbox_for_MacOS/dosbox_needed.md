@@ -3,7 +3,7 @@
 #### Introduction 
 
 1. 首先需要的就是Dosbox这个工具，可以使用terminal的homebrew包管理工具下载`brew install dosbox`
-2. 通过homebrew下载的dosbox是没有编译和链接程序的，需要额外的[下载](./)，三个文件任选其一下载解压即可，[默认下载](./dosbox_needed.zip)的是`.zip`
+2. 通过homebrew下载的dosbox是没有编译和链接程序的，需要额外的[下载](./)，三个文件任选其一下载解压即可，[默认下载](https://github.com/Chenpeel/Notes-of-CS/raw/master/files/dosbox_for_MacOS/dosbox_needed.zip)的是`.zip`
 3. 下载完成后将其放在一个文件夹，并移动到方便操作的地方，为了便于启动dosbox后进行mount挂载操作
 4. 挂载：
    - 在dosbox中输入挂载指令`mount  C /Users/your_user_name/xxx` 将虚拟的C盘挂载到你的 `/用户/此用户/存放上述下载的文件夹`，
