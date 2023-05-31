@@ -5,7 +5,7 @@ Markdown基本语法：[Markdown.md](./notes_md/markdown.md)
 
 Vim工具的基本操作：[Vim.md](./notes_md/vim.md)
 
-汇编语言学习： [Assembly.md](./notes_md/assemblymd)
+汇编语言学习： [Assembly.md](./notes_md/assembly.md)
 
 对C/C++的项目级编译： [Cmake.md](./notes_md/cmake.md)
 
