@@ -16,7 +16,7 @@ cmake的定义是什么 ？-----高级编译配置工具
 
 1、绝大多数的linux系统已经安装了CMake
 
-2、Windows或某些没有安装过的linux系统，去[http://www.cmake.org/HTML/Download.htm](http://www.cmake.org/HTML/Download.html)l  可以下载安装
+2、Windows或某些没有安装过的linux系统,可以在此[下载安装](http://www.cmake.org/HTML/Download.html)
 
 # CMake一个HelloWord
 

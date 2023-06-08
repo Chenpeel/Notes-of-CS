@@ -82,7 +82,7 @@
 - 只读存储器ROM（Read Only Memory）
   - BIOS（Basic Input/Output System），由主板和各类接口卡厂商提供的软件系统，实现基本的输入输出
 
-<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230425223451613.png" alt="image-20230425223451613" style="zoom:25%;" />
+<img src="../pics/image-20230425223451613.png" alt="image-20230425223451613" style="zoom:25%;" />
 
 ###### 内存地址空间
 
@@ -90,7 +90,7 @@
 - 逻辑存储器即内存地址空间（Imaginational）
   - 不同的计算机的内存地址空间的分配不同（即主存储器、显存、各类ROM的大小空间是不同的）
 
-<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230425223756909.png" alt="image-20230425223756909" style="zoom:25%;" />
+<img src="../pics/image-20230425223756909.png" alt="image-20230425223756909" style="zoom:25%;" />
 
 
 
@@ -140,7 +140,7 @@
 
   - 通过$段地址\times16+偏移地址$来映射物理地址
 
-    <img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230425230113357.png" alt="image-20230425230113357" style="zoom:25%;" />
+    <img src="../pics/image-20230425230113357.png" alt="image-20230425230113357" style="zoom:25%;" />
 
 ###### 段的概念
 
@@ -380,7 +380,7 @@ mov [bx],ax
 - 将ax中的数据送入内存`SA:EA`中
 - 即`((ds)*16 + (bx)) = (ax)`
 
-<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230511004104259.png" alt="image-20230511004104259" style="zoom:25%;" />
+<img src="../pics/image-20230511004104259.png" alt="image-20230511004104259" style="zoom:25%;" />
 
 - `bx`内容自动加1
 
@@ -938,7 +938,7 @@ mov byte ptr [bx].10h[si],'X'
 
 ###### 8086CPU的flag寄存器的结构
 
-<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230522011407039.png" alt="image-20230522011420055" style="zoom:50%;" />
+<img src="../pics/image-20230522011407039.png" alt="image-20230522011420055" style="zoom:50%;" />
 
 - flag中0、2、4、6、7、8、9、10、11位具有特殊的含义
 
@@ -1189,5 +1189,5 @@ mov byte ptr [bx].10h[si],'X'
 
 ## Apple Silion M 
 
-ps:我使用的是M系列芯片的Mac, 学习8086CPU的汇编语言时，相关文件见files中的[dosbox_for_MacOS](./files/dosbox_for_MacOS/dosbox_needed.md)
+ps:我使用的是M系列芯片的Mac, 学习8086CPU的汇编语言时，相关文件见files中的[dosbox_for_MacOS](../files/dosbox_for_MacOS/dosbox_needed.md)
 

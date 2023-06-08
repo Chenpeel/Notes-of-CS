@@ -6,7 +6,7 @@
 
 ##### shell basic commands
 
-###### [bash shell](https://github.com/Chenpeel/Notes-of-CS/blob/master/shell.md)
+###### [bash shell](./shell.md)
 
 - 常用系统环境变量：`$HOME` `$PWD` `$SHELL` `$USER` 等等
 - `env`  显示所有系统环境变量
@@ -30,7 +30,7 @@
 - `cat [] filename` (catch file)  `[-n]` options 
 - `head -n 10` first 10 lines
 - `tail -n 12` last 12 lines
-  -  `tail -f file`  实时跟踪文件信息，而执行[vim操作](https://github.com/Chenpeel/Notes-of-CS/blob/master/vim.md)却不会更新
+  -  `tail -f file`  实时跟踪文件信息，而执行[vim操作](./vim.md)却不会更新
 - `more file`
 - `less file` 
 - `echo string` 
@@ -269,7 +269,7 @@
 
 ##### APT (Advanced Packaging Tools) 包管理
 
-- [更改apt安装源](https://github.com/Chenpeel/Notes-of-CS/blob/master/shsh/apt_repo_change.sh)
+- [更改apt安装源](../shsh/apt_repo_change.sh)
   - 将apt_repo_change.sh复制到本地
   - terminal键入`sh apt_repo_change.sh` 即可执行（Ubuntu 20版本）
   - [其他版本(清华镜像)](http://mirrors.ustc.edu.cn)
