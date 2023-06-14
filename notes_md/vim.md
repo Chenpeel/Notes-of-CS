@@ -79,7 +79,7 @@
 - s/old/new **当前行的第一个**替换old 为new
 - s/old/new/g **当前行的所有**old 替换为new
 - %s/old/new/g **文本中的所有的字符串** old 替换为new
-- %s/**^**old/new/g  **文本中所有的以old开头的字符串**替换为new
+- %s/old/new/g  **文本中所有的以old开头的字符串**替换为new
 
 
 
