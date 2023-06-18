@@ -1,6 +1,4 @@
-##### Linux commands
-
-
+> #  Linux commands
 
 ## CentOS 7
 

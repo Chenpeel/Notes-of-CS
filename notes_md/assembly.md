@@ -52,7 +52,7 @@
 - 地址总线数（N）决定了CPU寻址能力
 - 寻址单元数（$2^N$）
 
-<img src="https://github.com/Chenpeel/Notes-of-CS/blob/master/pics/image-20230425221719557.png" alt="image-20230425221719557" style="zoom:25%;" />
+<img src="../pics/image-20230425221719557.png" alt="image-20230425221719557" style="zoom:25%;" />
 
 ###### 数据总线
 
@@ -1104,6 +1104,8 @@ mov byte ptr [bx].10h[si],'X'
   - `(IP) = (n*4),(CS)= (n*4 + 2)`
 - 我们可以用`int`指令调用系统提供的程序，也可以调用自己编写的程序
 
+
+
 ###### 编写供应用程序调用的中断例程
 
 - 求word型数据的平方
@@ -1111,17 +1113,44 @@ mov byte ptr [bx].10h[si],'X'
   
 - 将全是字母，以0结尾的字符串转为大写
   - [capital_7ch.asm](../files/asm_code/capital_7ch.asm) & [ts_capital_7ch.asm](../files/asm_code/ts_capital_7ch.asm)
-
-
-
+  
+  
 
 ###### 对`int` `iret` 栈的深入理解
 
+- 使用`iret`可以在中断过程中从栈中获取 相应的段地址和便宜地址  并放入`CS:IP`中
 
+
+
+###### BIOS和DOS中断例程
+
+1. 系统主板中的ROM中有专门存放BIOS（Basic Input & Output System）的部分
+
+   BIOS内容：
+
+   - 硬件系统的检测和初始化程序
+
+   - 外部中断和内部中断的中断例程
+
+   - 对硬件设备进行基本的输入输出的中断例程
+
+   - 其他硬件相关的中断例程
+
+2. 操作系统DOS页提供了中断例程，是面向程序员的编程资源
+3. 可以使用int指令直接调用DOS和BIOS提供的中断例程，来完成工作
+4. 安装历程：
+   - CPU开机加电，初始化`(CS)=0FFFFH (IP)=0`自动从`FFFF:0`单元开始执行程序，其中有一条跳转指令，转去执行BIOS的硬件系统检查和初始化程序
+   - 初始化程序将会建立BIOS所支持的中断向量（BIOS固化在ROM中，中断向量一直在内存中存在）
+   - 初始化完成后，调用`int 19H`进行操作系统的引导，将计算机交由操作系统控制
+   - DOS启动后，除完成其他工作，将其提供的中断例程装入内存，建立对应的中断向量
+5. [BIOS中断向量表](https://zh.wikipedia.org/wiki/BIOS%E4%B8%AD%E6%96%B7%E5%91%BC%E5%8F%AB#BIOS_%E4%B8%AD%E6%96%B7%E5%90%91%E9%87%8F%E8%A1%A8)
+6. [DOS中断向量表](https://blog.csdn.net/xiaobai_2511/article/details/72898400)
 
 
 
 ##### 十四、端口
+
+
 
 ##### 十五、外中断
 
