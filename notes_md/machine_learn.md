@@ -21,7 +21,7 @@
 
 # 线性回归
 
-—— 线性拟合自变量与因变量之间的关系 $ y= w^0 + w^1x^1+w^2x^2 +\cdot\cdot\cdot+w^nx^n = \Sigma_{i=0}^{n}w^{i}x^{i} = W^{T}X $
+—— 线性拟合自变量与因变量之间的关系 $y= w^0 + w^1x^1+w^2x^2 +\cdot\cdot\cdot+w^nx^n = \Sigma_{i=0}^{n}w^{i}x^{i} = W^{T}X $
 
 ##### 目标函数
 
