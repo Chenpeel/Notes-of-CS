@@ -15,6 +15,8 @@ Shell语言的学习：[Shell](./notes_md/shell.md) （shell语言和linux/unix�
 
 MySQL语言的学习：[MySQL](./notes_md/MySQL.md)
 
+Web前端语言：[HTML](./notes_md/html.md)  CSS  JavaScript
+
 Python机器学习：[Machine Learn](./notes_md/machine_learn.md)
 
 Algorithms算法相关单开了个库：[Algorithms](https://github.com/Chenpeel/Algoritms_Notes)
