@@ -566,9 +566,5 @@
   
   ```
 
-<br/><br/><br/><br/><br/><br/><br/>
-
-
-
-[Return to README](../README.md)                                                                                <a href="./css.md" align="right">Next to css.md</a>
+<br/><br/><br/><br/><br/><br/><br/>[Return to README](../README.md) <br/><br/><br/><br/><a href="./css.md" align="right">Next to css.md</a>
 
