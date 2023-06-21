@@ -15,7 +15,9 @@
 
 ##### 实现
 
-[KNN.ipynb](https://github.com/Chenpeel/Code_Learning/blob/master/Python/jupyter/KNN.ipynb)
+<a href="https://github.com/Chenpeel/Code_Learning/blob/master/Python/jupyter/KNN.ipynb" target="_blank">KNN.ipynb</a>
+
+
 
 
 
