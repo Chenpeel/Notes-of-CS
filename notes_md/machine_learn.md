@@ -17,7 +17,7 @@
 
 ##### 实现
 
-<a href="https://github.com/Chenpeel/Code_Learning/blob/master/Python/jupyter/KNN.ipynb" target="_blank">KNN.ipynb</a>
+<a href="https://github.com/Chenpeel/Code_Learning/tree/master/Python/jupyter/KNN" target="_blank">KNN</a>
 
 
 
@@ -35,7 +35,7 @@ $J(w) = \cfrac{1}{2} \Sigma_{i=1}^{n}(y^{(i)} - \hat{y}^{(i)})^2 $
 
 - 最小二乘法
    通过矩阵乘法来计算权重
-  <a href="https://github.com/Chenpeel/Code_Learning/blob/master/Python/jupyter/OSL.ipynb">OSL.ipynb</a>
+  <a href="https://github.com/Chenpeel/Code_Learning/tree/master/Python/jupyter/OLS">OSL</a>
   
 - 梯度下降法
 
